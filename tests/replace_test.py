@@ -4,7 +4,7 @@ import os
 import sys
 import pytest
 
-from replace import setReplacement, sendReplacement, keywords
+from janitor_bot.cogs.replace import setReplacement, sendReplacement, keywords
 
 
 def test_setKeyword():
