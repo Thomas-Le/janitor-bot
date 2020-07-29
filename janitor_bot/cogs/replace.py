@@ -19,15 +19,20 @@ class Replace(commands.Cog):
         new_message = ""
         for word in keywords:
             if re.search(word, message.content):
-                new_message = await sendReplacement(message.content)
+                new_message = sendReplacement(message.content)
                 await message.delete()
                 break
         if new_message != message.content:
             await message.channel.send(f"{message.author} : {new_message}")
 
-    @commands.command()
+    @commands.command(help ="Command janitor bot to replace the first specified word with the second in all future messages.\nStop replacements with 'end-replacement <arg1>'")
     async def replace(self, ctx, arg1: str, arg2: str):
         setReplacement(arg1, arg2)
+
+    @replace.error
+    async def replace_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"{error} Use '!help replace' for more info.")
 
 
 def setup(bot):
