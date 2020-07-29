@@ -49,10 +49,14 @@ def sendReplacement(message):
 def setReplacement(keyword, val):
     global keywords
     keywords[keyword] = val
+    sort_dict()
+
+def sort_dict():
+    global keywords
     keywords = {
         key: value
         for key, value in sorted(
             keywords.items(), key=lambda item: item[0], reverse=True
         )
     }
-    return keywords
+    
