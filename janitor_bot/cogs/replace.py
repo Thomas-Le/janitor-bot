@@ -46,7 +46,24 @@ class Replace(commands.Cog):
         if isinstance(error, commands.CommandInvokeError):
             await ctx.send(f"{error.original}")
         else:
-            await ctx.send(f"{error} Use '!help end-replacement' for more info.")
+            await ctx.send(f"{error}\nUse '!help end-replacement' for more info.")
+
+    @commands.command(
+        name="show-replacements", help="Display all the words currently being replaced."
+    )
+    async def show_replacements(self, ctx):
+        pagination = commands.Paginator()
+        for word in keywords:
+            pagination.add_line(line=f"{word} -> {keywords.get(word)}")
+        if len(pagination.pages) == 0:
+            await ctx.send("No words being currently replaced.")
+        else:
+            for page in pagination.pages:
+                await ctx.send(page)
+
+    @show_replacements.error
+    async def show_replacements_error(self, ctx, error):
+        await ctx.send(f"{error}\nUse '!help show-replacements' for more info.")
 
 
 def setup(bot):
