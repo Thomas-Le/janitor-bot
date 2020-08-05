@@ -19,7 +19,7 @@ class Replace(commands.Cog):
         new_message = message.content
         for word in keywords:
             if re.search(word, message.content):
-                new_message = sendReplacement(message.content)
+                new_message = send_replacement(message.content)
                 await message.delete()
                 break
         if new_message != message.content:
@@ -29,7 +29,7 @@ class Replace(commands.Cog):
         help="Command janitor bot to replace the first specified word with the second in all future messages.\nStop replacements with '!end-replacement <arg1>'"
     )
     async def replace(self, ctx, arg1: str, arg2: str):
-        setReplacement(arg1, arg2)
+        set_replacement(arg1, arg2)
 
     @replace.error
     async def replace_error(self, ctx, error):
@@ -70,7 +70,7 @@ def setup(bot):
     bot.add_cog(Replace(bot))
 
 
-def sendReplacement(message):
+def send_replacement(message):
     new_message = message
     for word in keywords:
         new_message = re.sub(word, keywords.get(word), new_message)
@@ -87,10 +87,11 @@ def remove_replacement(keyword):
         )
 
 
-def setReplacement(keyword, val):
+def set_replacement(keyword, val):
     global keywords
     keywords[keyword] = val
     sort_dict()
+
 
 def sort_dict():
     global keywords
@@ -100,3 +101,6 @@ def sort_dict():
             keywords.items(), key=lambda item: item[0], reverse=True
         )
     }
+
+def get_keywords():
+    return keywords
